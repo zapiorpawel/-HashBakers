@@ -1,0 +1,3 @@
+[submodule "hashlibpp"]
+	path = hashlibpp
+	url = https://github.com/aksalj/hashlibpp
