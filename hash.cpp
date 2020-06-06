@@ -1,7 +1,7 @@
 #include "hash.hpp"
 using namespace std;
 
-HashBaker::HashBaker(HashType Hash, string Path)
+/*HashBaker::HashBaker(HashType Hash, string Path)
 {
 	switch(Hash)
 	{
@@ -43,4 +43,15 @@ bool HashBaker::IsCooked()
 string HashBaker::TakeOut()
 {
 	return thread.get();
+}*/
+
+TestBaker::TestBaker() {}
+
+TestBaker::~TestBaker() {}
+
+void TestBaker::process() {
+    hashwrapper *wrapper = new md5wrapper();
+    QString result = QString::fromStdString(wrapper->getHashFromFile("D:\\Pobrane\\install66.iso"));
+    qDebug(result.toLatin1());
+    emit finished();
 }

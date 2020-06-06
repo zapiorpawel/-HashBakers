@@ -2,9 +2,11 @@
 #define HASH_HPP
 
 #include "hashlibpp/src/hashlibpp.h"
-#include <future>
+#include <QThread>
+#include <QDebug>
+/*#include <future>
 #include <thread>
-//#include <string>
+//#include <string>*/
 using namespace std;
 
 //zamień na połączenie e.g HashClass->HashMD5
@@ -16,7 +18,7 @@ enum HashType
 	SHA384,
 	SHA512
 };
-
+/*
 class HashBaker
 {
 private:
@@ -29,6 +31,18 @@ public:
     void Bake();
     bool IsCooked();
     string TakeOut();
+};*/
+
+class TestBaker : public QObject {
+    Q_OBJECT
+public:
+    TestBaker();
+    ~TestBaker();
+public slots:
+    void process();
+signals:
+    void finished();
+    void error(QString err);
 };
 
 #endif
