@@ -1,26 +1,21 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "hash.hpp"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QThread* thread = new QThread;
-    TestBaker* worker = new TestBaker();
-    worker->moveToThread(thread);
-    //QObject::connect(worker, SIGNAL (error(QString)), this, SLOT (errorString(QString)));
-    connect(thread, SIGNAL (started()), worker, SLOT (process()));
-    connect(worker, SIGNAL (finished()), thread, SLOT (quit()));
-    connect(thread, SIGNAL (finished()), this, SLOT (SetLabelText()));
-    connect(worker, SIGNAL (finished()), worker, SLOT (deleteLater()));
-    connect(thread, SIGNAL (finished()), thread, SLOT (deleteLater()));
-    thread->start();
+    HashBaker testhash(HashType::MD5,QString::fromUtf8("D:\\Pobrane\\sad"));
+    QObject::connect(&testhash, SIGNAL(Cooked(QString)),this, SLOT(SetLabelText(QString)));
+    testhash.Bake();
 }
 
-void MainWindow::SetLabelText()
+void MainWindow::SetLabelText(QString text)
 {
-    ui->label1->setText("text");
+    qDebug(text.toLatin1());
+    ui->label1->setText(text);
     return;
 }
 

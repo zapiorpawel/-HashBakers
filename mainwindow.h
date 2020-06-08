@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QLabel>
-#include "hash.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,9 +17,10 @@ public:
     ~MainWindow();
 
 public Q_SLOTS:
-    void SetLabelText();
+    void SetLabelText(QString text);
 
 private:
     Ui::MainWindow *ui;
 };
+
 #endif // MAINWINDOW_H

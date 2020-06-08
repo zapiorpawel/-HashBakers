@@ -1,7 +1,7 @@
 #include "hash.hpp"
 using namespace std;
 
-/*HashBaker::HashBaker(HashType Hash, string Path)
+HashBaker::HashBaker(HashType Hash, QString Path)
 {
 	switch(Hash)
 	{
@@ -21,37 +21,40 @@ using namespace std;
 			HashWrapper = new sha512wrapper();
 			break; 
 	}
-	FilePath = Path;
-	Lock = false;
+    FilePath = Path;
+}
+
+HashBaker::~HashBaker()
+{
+    delete HashWrapper;
 }
 
 void HashBaker::Bake()
 {
-	thread = async(std::launch::async, [this] {
-		Lock = true;
-		string result = HashWrapper->getHashFromFile(FilePath);
-		Lock = false;
-		return result;
-    });
+    qDebug("bake here");
+    connect(&watcher, SIGNAL(finished()), this, SLOT(CallDinner()));
+    thread = QtConcurrent::run(this->HashWrapper,&hashwrapper::getHashFromFile,FilePath.toStdString());
+    watcher.setFuture(thread);
 }
 
-bool HashBaker::IsCooked()
+void HashBaker::CallDinner()
 {
-	return Lock ? false : true;
+    qDebug("dinner's ready");
+    hash = QString::fromStdString(thread.result());
+    emit Cooked(hash);
 }
 
-string HashBaker::TakeOut()
+QString HashBaker::TakeOut()
 {
-	return thread.get();
-}*/
+    return hash;
+}
 
-TestBaker::TestBaker() {}
 
-TestBaker::~TestBaker() {}
-
-void TestBaker::process() {
+/*void TestBaker::process() {
     hashwrapper *wrapper = new md5wrapper();
     QString result = QString::fromStdString(wrapper->getHashFromFile("D:\\Pobrane\\install66.iso"));
-    qDebug(result.toLatin1());
+    hashes[0] = result.toLatin1();
+    qDebug("finished");
+    qDebug("1. "+hashes[0].toLatin1());
     emit finished();
-}
+}*/
