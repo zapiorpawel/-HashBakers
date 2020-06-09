@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="hasherino" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/hasherino" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/hasherino" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-s" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-DWIN32" />
+			<Add option="-mms-bitfields" />
+			<Add directory="fltk/include" />
+		</Compiler>
+		<Linker>
+			<Add library="fltk" />
+			<Add library="ole32" />
+			<Add library="uuid" />
+			<Add library="comctl32" />
+			<Add library="wsock32" />
+			<Add library="m" />
+			<Add library="gdi32" />
+			<Add library="user32" />
+			<Add library="kernel32" />
+			<Add directory="fltk/lib" />
+		</Linker>
+		<Unit filename="hash.cpp" />
+		<Unit filename="hash.hpp" />
+		<Unit filename="hashlibpp/src/hashlibpp.h" />
+		<Unit filename="hashlibpp/src/hl_exception.h" />
+		<Unit filename="hashlibpp/src/hl_hashwrapper.h" />
+		<Unit filename="hashlibpp/src/hl_md5.cpp" />
+		<Unit filename="hashlibpp/src/hl_md5.h" />
+		<Unit filename="hashlibpp/src/hl_md5wrapper.cpp" />
+		<Unit filename="hashlibpp/src/hl_md5wrapper.h" />
+		<Unit filename="hashlibpp/src/hl_sha1.cpp" />
+		<Unit filename="hashlibpp/src/hl_sha1.h" />
+		<Unit filename="hashlibpp/src/hl_sha1wrapper.cpp" />
+		<Unit filename="hashlibpp/src/hl_sha1wrapper.h" />
+		<Unit filename="hashlibpp/src/hl_sha256.cpp" />
+		<Unit filename="hashlibpp/src/hl_sha256.h" />
+		<Unit filename="hashlibpp/src/hl_sha256wrapper.cpp" />
+		<Unit filename="hashlibpp/src/hl_sha256wrapper.h" />
+		<Unit filename="hashlibpp/src/hl_sha2ext.cpp" />
+		<Unit filename="hashlibpp/src/hl_sha2ext.h" />
+		<Unit filename="hashlibpp/src/hl_sha2mac.h" />
+		<Unit filename="hashlibpp/src/hl_sha384wrapper.cpp" />
+		<Unit filename="hashlibpp/src/hl_sha384wrapper.h" />
+		<Unit filename="hashlibpp/src/hl_sha512wrapper.cpp" />
+		<Unit filename="hashlibpp/src/hl_sha512wrapper.h" />
+		<Unit filename="hashlibpp/src/hl_types.h" />
+		<Unit filename="hashlibpp/src/hl_wrapperfactory.cpp" />
+		<Unit filename="hashlibpp/src/hl_wrapperfactory.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="tools.cpp" />
+		<Unit filename="tools.hpp" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

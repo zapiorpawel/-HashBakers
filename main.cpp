@@ -1,88 +1,51 @@
-#include "hashlibpp/src/hashlibpp.h"
-#include "hash.hpp"
-#include "tools.hpp"
 #include <iostream>
-using namespace std;
+#include <FL/Fl.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Button.H>
+#include <FL/Fl_Output.H>
+#include <FL/Fl_Box.H>
+#include "hash.hpp"
 
-void PrintHelp()
+Fl_Output *output;
+std::string filepath;
+
+class DragNDrop : public Fl_Box
 {
-	cout << "hasherino v0.69" << endl;
-	cout << "needs a file argument" << endl;
-	return;
+public:
+    DragNDrop(int x,int y,int w,int h,const char *l=0):Fl_Box(x,y,w,h,l){};
+    int handle (int e)
+    {
+        if( e == FL_PASTE)
+        {
+            cout << "dropped!" <<endl;
+            filepath = Fl::event_text();
+            label(filepath.c_str());
+        }
+    }
+};
+
+void dostuff(Fl_Widget *, void *) {
+    std::cout << "pressed" << std::endl;
+    HashBaker oven(HashType::MD5,filepath);
+    oven.Bake();
+    while(true)
+    {
+        if(oven.IsCooked())
+            break;
+    }
+    output->value(oven.TakeOut().c_str());
+    return;
 }
 
-int main(int argc, char **argv)
-{
-	if(argc < 2)
-	{
-		PrintHelp();
-		return -1;
-	}
-	string FilePath = argv[1];
-	string Hashes[5] = {"","","","",""};
-	int check;
-	HashBaker MD5Oven(HashType::MD5,FilePath);
-	HashBaker SHA1Oven(HashType::SHA1,FilePath);
-	HashBaker SHA256Oven(HashType::SHA256,FilePath);
-	HashBaker SHA384Oven(HashType::SHA384,FilePath);
-	HashBaker SHA512Oven(HashType::SHA512,FilePath);
-	MD5Oven.Bake();
-	SHA1Oven.Bake();
-	SHA256Oven.Bake();
-	SHA384Oven.Bake();
-	SHA512Oven.Bake();
-	while(true)
-	{
-		check = 0;
-		this_thread::sleep_for(chrono::milliseconds(100));
-		if(!MD5Oven.IsCooked())
-			cout << "MD5: " << GenerateRandomString(HashType::MD5) << "\n";
-		else
-		{
-			check++;
-			if(Hashes[0] == "")
-				Hashes[0] = MD5Oven.TakeOut();
-			cout << "MD5: " << Hashes[0] << "\n";
-		}
-		if(!SHA1Oven.IsCooked())
-			cout << "SHA1: " << GenerateRandomString(HashType::SHA1) << endl;
-		else
-		{
-			check++;
-			if(Hashes[1] == "")
-				Hashes[1] = SHA1Oven.TakeOut();
-			cout << "SHA1: " << Hashes[1] << "\n";
-		}
-		if(!SHA256Oven.IsCooked())
-			cout << "SHA256: " << GenerateRandomString(HashType::SHA256) << endl;
-		else
-		{
-			check++;
-			if(Hashes[2] == "")
-				Hashes[2] = SHA256Oven.TakeOut();
-			cout << "SHA256: " << Hashes[2] << "\n";
-		}
-		if(!SHA384Oven.IsCooked())
-			cout << "SHA384: " << GenerateRandomString(HashType::SHA384) << endl;
-		else
-		{
-			check++;
-			if(Hashes[3] == "")
-				Hashes[3] = SHA384Oven.TakeOut();
-			cout << "SHA384: " << Hashes[3] << "\n";
-		}
-		if(!SHA512Oven.IsCooked())
-			cout << "SHA512: " << GenerateRandomString(HashType::SHA512) << endl;
-		else
-		{
-			check++;
-			if(Hashes[4] == "")
-				Hashes[4] = SHA512Oven.TakeOut();
-			cout << "SHA512: " << Hashes[4] << "\n";
-		}
-		if(check == 5)
-			break;
-		cout << "\033[F\033[F\033[F\033[F\033[F";
-	}
-	return 0;
+int main(int argc, char ** argv) {
+    Fl::scheme("gtk+");
+    Fl_Window *window = new Fl_Window(320,120);
+    Fl_Button *button = new Fl_Button(220, 20, 80, 25, "Start");
+    DragNDrop *box = new DragNDrop(20,20,180,40,"drop here");
+    output = new Fl_Output(50,80,150,25,"MD5:");
+    box->align(FL_ALIGN_WRAP);
+    button->callback(dostuff,0);
+    window->end();
+    window->show(argc,argv);
+    return Fl::run();
 }

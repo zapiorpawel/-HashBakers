@@ -4,6 +4,8 @@
 #include "hashlibpp/src/hashlibpp.h"
 #include <future>
 #include <thread>
+#include <FL/Fl.H>
+#include <FL/Fl_Box.H>
 //#include <string>
 using namespace std;
 
