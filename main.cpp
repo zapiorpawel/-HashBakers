@@ -4,8 +4,11 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Box.H>
+#include "threads.h"
 #include "hash.hpp"
+#include "tools.hpp"
 
+Fl_Thread prime_thread;
 Fl_Output *output;
 std::string filepath;
 
@@ -24,16 +27,39 @@ public:
     }
 };
 
-void dostuff(Fl_Widget *, void *) {
+void* tempcalcstuff(void *p)
+{
+       Fl_Button *button = (Fl_Button*) p;
+       Fl::lock();
+       button->deactivate();
+       output->deactivate();
+        Fl::unlock();
+        HashBaker oven(HashType::MD5,filepath);
+        oven.Bake();
+        while(true)
+        {
+            std::this_thread::sleep_for(chrono::milliseconds(250));
+            cout << "while" << endl;
+            if(oven.IsCooked())
+                break;
+            else
+            {
+               Fl::lock();
+                output->value(GenerateRandomString(HashType::MD5).c_str());
+                Fl::unlock();
+            }
+        }
+        Fl::lock();
+        output->value(oven.TakeOut().c_str());
+        button->activate();
+        output->activate();
+        Fl::unlock();
+        return NULL;
+}
+
+void dostuff(Fl_Widget *z, void *k) {
     std::cout << "pressed" << std::endl;
-    HashBaker oven(HashType::MD5,filepath);
-    oven.Bake();
-    while(true)
-    {
-        if(oven.IsCooked())
-            break;
-    }
-    output->value(oven.TakeOut().c_str());
+    fl_create_thread(prime_thread, tempcalcstuff, z);
     return;
 }
 
@@ -47,5 +73,6 @@ int main(int argc, char ** argv) {
     button->callback(dostuff,0);
     window->end();
     window->show(argc,argv);
+    Fl::lock();
     return Fl::run();
 }
