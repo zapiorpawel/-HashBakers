@@ -24,6 +24,7 @@ class HashBaker
 private:
     hashwrapper *HashWrapper;
     string FilePath;
+    string Hash = "";
 	future<string> thread;
 	bool Lock;
 public:

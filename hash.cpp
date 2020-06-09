@@ -7,19 +7,19 @@ HashBaker::HashBaker(HashType Hash, string Path)
 	{
 		case MD5:
 			HashWrapper = new md5wrapper();
-			break; 
+			break;
 		case SHA1:
 			HashWrapper = new sha1wrapper();
-			break; 
+			break;
 		case SHA256:
 			HashWrapper = new sha256wrapper();
-			break; 
+			break;
 		case SHA384:
 			HashWrapper = new sha384wrapper();
-			break; 
+			break;
 		case SHA512:
 			HashWrapper = new sha512wrapper();
-			break; 
+			break;
 	}
 	FilePath = Path;
 	Lock = false;
@@ -42,5 +42,7 @@ bool HashBaker::IsCooked()
 
 string HashBaker::TakeOut()
 {
-	return thread.get();
+    if(Hash == "")
+        Hash = thread.get();
+	return Hash;
 }
