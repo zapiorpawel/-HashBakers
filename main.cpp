@@ -9,11 +9,28 @@
 #include "threads.h"
 #include "hash.hpp"
 #include "tools.hpp"
+#include <FL/Fl_Draw.H>
+#include <FL/Fl_BMP_Image.H>
 
 Fl_Thread prime_thread;
 Fl_Output *md5_output, *sha1_output, *sha256_output, *sha384_output, *sha512_output;
 Fl_Check_Button *md5_switch, *sha1_switch, *sha256_switch, *sha384_switch, *sha512_switch;
 std::string filepath = "";
+
+class Rysunek : public Fl_Widget
+{
+void draw(void);
+    Fl_BMP_Image *bitmapa;
+    public:
+    Rysunek(int X,int Y,int W,int H) : Fl_Widget(X,Y,W,H)
+        {
+    bitmapa = new Fl_BMP_Image("logo.bmp");
+        }
+    ~Rysunek()
+        {
+        delete bitmapa;
+        }
+};
 
 class DragNDrop : public Fl_Box
 {
@@ -29,6 +46,8 @@ public:
         }
     }
 };
+
+
 
 void switch_callback(Fl_Widget *z, void *k)
 {
@@ -66,6 +85,7 @@ void* controlthread(void *p)
     int ccount = 0;
        Fl_Button *button = (Fl_Button*) p;
        Fl::lock();
+
 
        button->deactivate();
 
@@ -129,19 +149,25 @@ void dostuff(Fl_Widget *z, void *k) {
 
 int main(int argc, char ** argv) {
     Fl::scheme("gtk+");
-    Fl_Window *window = new Fl_Window(320,250);
-    Fl_Button *button = new Fl_Button(220, 20, 80, 25, "Start");
-    DragNDrop *box = new DragNDrop(20,20,180,40,"drop here");
-    md5_output = new Fl_Output(90,80,220,25);
-    md5_switch = new Fl_Check_Button(10,80,40,25,"MD5");
-    sha1_output = new Fl_Output(90,110,220,25);
-    sha1_switch = new Fl_Check_Button(10,110,40,25,"SHA1");
-    sha256_output = new Fl_Output(90,140,220,25);
-    sha256_switch = new Fl_Check_Button(10,140,40,25,"SHA256");
-    sha384_output = new Fl_Output(90,170,220,25);
-    sha384_switch = new Fl_Check_Button(10,170,40,25,"SHA384");
-    sha512_output = new Fl_Output(90,200,220,25);
-    sha512_switch = new Fl_Check_Button(10,200,40,25,"SHA512");
+    Fl_Window *window = new Fl_Window(700,500, "Hasherino");
+    Fl_Button *button = new Fl_Button(500, 180, 180, 100, "Start");
+
+//    Rysunek *rysunek(0, 0, 243, 247);
+
+    Fl_Button *button2 = new Fl_Button(500, 115, 180, 50, "Info");
+    DragNDrop *box = new DragNDrop(20,20,350,300,"drop your files here");
+    Fl_Box info(18, 295, 350, 30, "|   Please, decide which types of hashes you want to get:");
+    Fl_Box info2(13, 310, 10, 30, " \\/ ");
+    md5_output = new Fl_Output(90,340,600,25);
+    md5_switch = new Fl_Check_Button(10,340,70,25,"MD5");
+    sha1_output = new Fl_Output(90,370,600,25);
+    sha1_switch = new Fl_Check_Button(10,370,70,25,"SHA1");
+    sha256_output = new Fl_Output(90,400,600,25);
+    sha256_switch = new Fl_Check_Button(10,400,70,25,"SHA256");
+    sha384_output = new Fl_Output(90,430,600,25);
+    sha384_switch = new Fl_Check_Button(10,430,70,25,"SHA384");
+    sha512_output = new Fl_Output(90,460,600,25);
+    sha512_switch = new Fl_Check_Button(10,460,70,25,"SHA512");
     box->align(FL_ALIGN_WRAP);
     md5_switch->set();
     sha1_switch->set();

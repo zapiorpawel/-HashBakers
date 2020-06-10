@@ -27,8 +27,9 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-DWIN32" />
+			<Add option="-std=c++11" />
 			<Add option="-mms-bitfields" />
+			<Add option="-DWIN32" />
 			<Add directory="fltk/include" />
 		</Compiler>
 		<Linker>
