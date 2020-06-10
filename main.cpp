@@ -156,8 +156,7 @@ int main(int argc, char ** argv) {
 
     Fl_Button *button2 = new Fl_Button(500, 115, 180, 50, "Info");
     DragNDrop *box = new DragNDrop(20,20,350,300,"drop your files here");
-    Fl_Box info(18, 295, 350, 30, "|   Please, decide which types of hashes you want to get:");
-    Fl_Box info2(13, 310, 10, 30, " \\/ ");
+    Fl_Box info(18, 295, 350, 30, "@undo  Please, decide which types of hashes you want to get:");
     md5_output = new Fl_Output(90,340,600,25);
     md5_switch = new Fl_Check_Button(10,340,70,25,"MD5");
     sha1_output = new Fl_Output(90,370,600,25);
