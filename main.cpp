@@ -77,15 +77,15 @@ void* controlthread(void *p)
         HashBaker sha512(HashType::SHA512,filepath);
 
         if(md5_switch->value())
-            {md5.Bake(); ccount++;}
+            {md5.Bake(); ccount++;md5_switch->deactivate();}
         if(sha1_switch->value())
-            {sha1.Bake(); ccount++;}
+            {sha1.Bake(); ccount++;sha1_switch->deactivate();}
         if(sha256_switch->value())
-            {sha256.Bake(); ccount++;}
+            {sha256.Bake(); ccount++;sha256_switch->deactivate();}
         if(sha384_switch->value())
-            {sha384.Bake(); ccount++;}
+            {sha384.Bake(); ccount++;sha384_switch->deactivate();}
         if(sha512_switch->value())
-            {sha512.Bake(); ccount++;}
+            {sha512.Bake(); ccount++;sha512_switch->deactivate();}
 
         while(true)
         {
@@ -102,7 +102,15 @@ void* controlthread(void *p)
         }
         Fl::lock();
         button->activate();
+
+        sha512_switch->activate();
+        sha384_switch->activate();
+        sha256_switch->activate();
+        sha1_switch->activate();
+        md5_switch->activate();
+
         Fl::unlock();
+
 
         return NULL;
 }
