@@ -7,14 +7,23 @@ Fl_Check_Button *md5_switch, *sha1_switch, *sha256_switch, *sha384_switch, *sha5
 Fl_Thread prime_thread;
 
 int DragNDrop::handle (int e)
+{
+    if(e == FL_PASTE)
     {
-        if(e == FL_PASTE)
+        cout << "dropped!" <<endl;
+        filepath = Fl::event_text();
+        if(filepath.find('\n',0) != std::string::npos)
         {
-            cout << "dropped!" <<endl;
-            filepath = Fl::event_text();
-            label(filepath.c_str());
+            fl_message_title("Warning!");
+            fl_alert("Multiple files dropped!");
+            filepath = "";
+            label("drop your files here");
+            return 0;
         }
+        label(filepath.c_str());
+        return 0;
     }
+}
 
 int check_oven(Fl_Check_Button *button, HashBaker &oven, Fl_Output *out, HashType hashtype)
 {

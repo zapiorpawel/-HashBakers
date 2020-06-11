@@ -71,7 +71,6 @@
 		<Unit filename="hashlibpp/src/hl_wrapperfactory.cpp" />
 		<Unit filename="hashlibpp/src/hl_wrapperfactory.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="threads.h" />
 		<Unit filename="tools.cpp" />
 		<Unit filename="tools.hpp" />
 		<Extensions>
