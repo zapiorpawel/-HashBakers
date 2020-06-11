@@ -26,7 +26,9 @@ private:
 	future<string> thread;
 	bool Lock;
 public:
+    HashType Hashtype;
     HashBaker(HashType Hash, string Path);
+    ~HashBaker();
     void Bake();
     bool IsCooked();
     string TakeOut();

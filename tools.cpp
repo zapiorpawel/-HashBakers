@@ -25,7 +25,7 @@ int DragNDrop::handle (int e)
     }
 }
 
-int check_oven(Fl_Check_Button *button, HashBaker &oven, Fl_Output *out, HashType hashtype)
+int check_oven(Fl_Check_Button *button, HashBaker &oven, Fl_Output *out)
 {
     if(button->value())
     {
@@ -36,8 +36,9 @@ int check_oven(Fl_Check_Button *button, HashBaker &oven, Fl_Output *out, HashTyp
         }
         else
         {
+            //usunąć później
             Fl::lock();
-            out->value(GenerateRandomString(hashtype).c_str());
+            out->value(GenerateRandomString(oven.Hashtype).c_str());
             Fl::unlock();
             return 0;
         }
@@ -48,56 +49,56 @@ int check_oven(Fl_Check_Button *button, HashBaker &oven, Fl_Output *out, HashTyp
 void* control_thread(void *p)
 {
     int ccount = 0;
-       Fl_Button *button = (Fl_Button*) p;
-       Fl::lock();
+    Fl_Button *button = (Fl_Button*) p;
+    Fl::lock();
+    button->deactivate();
+    sha512_switch->deactivate();
+    sha384_switch->deactivate();
+    sha256_switch->deactivate();
+    sha1_switch->deactivate();
+    md5_switch->deactivate();
+    Fl::unlock();
+    HashBaker md5(HashType::MD5,filepath);
+    HashBaker sha1(HashType::SHA1,filepath);
+    HashBaker sha256(HashType::SHA256,filepath);
+    HashBaker sha384(HashType::SHA384,filepath);
+    HashBaker sha512(HashType::SHA512,filepath);
 
+    if(md5_switch->value())
+        {md5.Bake(); ccount++;}
+    if(sha1_switch->value())
+        {sha1.Bake(); ccount++;}
+    if(sha256_switch->value())
+        {sha256.Bake(); ccount++;}
+    if(sha384_switch->value())
+        {sha384.Bake(); ccount++;}
+    if(sha512_switch->value())
+        {sha512.Bake(); ccount++;}
 
-       button->deactivate();
+    while(true)
+    {
+        int fcount = 0;
+        std::this_thread::sleep_for(chrono::milliseconds(250));
+        cout << "loop" << endl;
+        fcount += check_oven(md5_switch,md5,md5_output);
+        fcount += check_oven(sha1_switch,sha1,sha1_output);
+        fcount += check_oven(sha256_switch,sha256,sha256_output);
+        fcount += check_oven(sha384_switch,sha384,sha384_output);
+        fcount += check_oven(sha512_switch,sha512,sha512_output);
+        if(fcount == ccount)
+            break;
+    }
 
-        Fl::unlock();
-        HashBaker md5(HashType::MD5,filepath);
-        HashBaker sha1(HashType::SHA1,filepath);
-        HashBaker sha256(HashType::SHA256,filepath);
-        HashBaker sha384(HashType::SHA384,filepath);
-        HashBaker sha512(HashType::SHA512,filepath);
+    Fl::lock();
+    button->activate();
+    sha512_switch->activate();
+    sha384_switch->activate();
+    sha256_switch->activate();
+    sha1_switch->activate();
+    md5_switch->activate();
+    Fl::unlock();
 
-        if(md5_switch->value())
-            {md5.Bake(); ccount++;md5_switch->deactivate();}
-        if(sha1_switch->value())
-            {sha1.Bake(); ccount++;sha1_switch->deactivate();}
-        if(sha256_switch->value())
-            {sha256.Bake(); ccount++;sha256_switch->deactivate();}
-        if(sha384_switch->value())
-            {sha384.Bake(); ccount++;sha384_switch->deactivate();}
-        if(sha512_switch->value())
-            {sha512.Bake(); ccount++;sha512_switch->deactivate();}
-
-        while(true)
-        {
-            int fcount = 0;
-            std::this_thread::sleep_for(chrono::milliseconds(250));
-            cout << "loop" << endl;
-            fcount += check_oven(md5_switch,md5,md5_output,HashType::MD5);
-            fcount += check_oven(sha1_switch,sha1,sha1_output,HashType::SHA1);
-            fcount += check_oven(sha256_switch,sha256,sha256_output,HashType::SHA256);
-            fcount += check_oven(sha384_switch,sha384,sha384_output,HashType::SHA384);
-            fcount += check_oven(sha512_switch,sha512,sha512_output,HashType::SHA512);
-            if(fcount == ccount)
-                break;
-        }
-        Fl::lock();
-        button->activate();
-
-        sha512_switch->activate();
-        sha384_switch->activate();
-        sha256_switch->activate();
-        sha1_switch->activate();
-        md5_switch->activate();
-
-        Fl::unlock();
-
-
-        return NULL;
+    return NULL;
 }
 
 void start_callback(Fl_Widget *z, void *k) {

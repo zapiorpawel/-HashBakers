@@ -21,8 +21,14 @@ HashBaker::HashBaker(HashType Hash, string Path)
 			HashWrapper = new sha512wrapper();
 			break;
 	}
+	Hashtype = Hash;
 	FilePath = Path;
 	Lock = false;
+}
+
+HashBaker::~HashBaker()
+{
+    delete HashWrapper;
 }
 
 void HashBaker::Bake()
