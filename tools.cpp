@@ -6,9 +6,9 @@
 std::string filepath = "";
 Fl_Output *md5_output, *sha1_output, *sha256_output, *sha384_output, *sha512_output;
 Fl_Check_Button *md5_switch, *sha1_switch, *sha256_switch, *sha384_switch, *sha512_switch;
+Fl_Double_Window *window_info;
+DragNDrop *b;
 Fl_Thread prime_thread;
-
- Fl_Double_Window *window_info;
 
 int DragNDrop::handle (int e)
 {
@@ -22,8 +22,10 @@ int DragNDrop::handle (int e)
             fl_alert("Multiple files dropped!");
             filepath = "";
             label("drop your files here");
+            b->align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
             return 0;
         }
+        b->align(FL_ALIGN_LEFT|FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
         md5_output->value("");
         sha1_output->value("");
         sha256_output->value("");
@@ -137,7 +139,7 @@ void init_ui()
 {
     Fl_Button *button = new Fl_Button(480, 200, 200, 100, "Start");
     Fl_Button *button2 = new Fl_Button(480, 140, 200, 50, "Info");
-    DragNDrop *b = new DragNDrop(20,20,450,280,"drop your files here");
+    b = new DragNDrop(20,20,450,280,"drop your files here");
     Fl_Box *instuct = new Fl_Box (20, 305, 350, 30, "@undo  Please, decide which types of hashes you want to get:");
     Fl_BMP_Image *image = new Fl_BMP_Image("logo.bmp");
     Fl_Box *img = new Fl_Box (480,0,200,150);
@@ -153,7 +155,7 @@ void init_ui()
     sha384_switch = new Fl_Check_Button(10,430,70,25,"SHA384");
     sha512_output = new Fl_Output(90,460,600,25);
     sha512_switch = new Fl_Check_Button(10,460,70,25,"SHA512");
-    b->align(FL_ALIGN_WRAP);
+    b->align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
     b->color(FL_WHITE);
     md5_switch->set();
     sha1_switch->set();
