@@ -178,9 +178,12 @@ void init_window(int argc, char **argv)
     window->show(argc,argv);
 
 
-    window_info = new Fl_Double_Window(400,300, "About");
-    Fl_Box about(10, 10, 180, 80, "File hashing software developed on Programming II course at the \n Faculty of Applied Mathematics of the Silesian University of Technology. \n Authors: Semir Sionek, Paweł Zapiór");
-
+    window_info = new Fl_Double_Window(300,300, "About");
+    Fl_BMP_Image *image = new Fl_BMP_Image("logo.bmp");
+    Fl_Box *img2 = new Fl_Box (50,0,200,150);
+    img2->image(image);
+    Fl_Box *about = new Fl_Box(10, 100, 280, 180, "File hashing software developed on Programming II course at the \n Faculty of Applied Mathematics of the Silesian University of Technology. \n \n  Authors: Semir Sionek, Paweł Zapiór");
+    about->align(FL_ALIGN_WRAP);
     window_info->end();
 }
 
