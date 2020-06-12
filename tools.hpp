@@ -8,7 +8,11 @@
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Box.H>
 #include <FL/fl_ask.H>
+#ifdef WIN32
 #include "threads.h"
+#else
+#include "fltk/include/threads.h"
+#endif
 #include "hash.hpp"
 #include <iostream>
 #include <chrono>
