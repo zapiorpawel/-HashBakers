@@ -135,12 +135,12 @@ void switch_callback(Fl_Widget *z, void *k)
 
 void init_ui()
 {
-    Fl_Button *button = new Fl_Button(500, 180, 180, 100, "Start");
-    Fl_Button *button2 = new Fl_Button(500, 115, 180, 50, "Info");
+    Fl_Button *button = new Fl_Button(480, 200, 200, 100, "Start");
+    Fl_Button *button2 = new Fl_Button(480, 140, 200, 50, "Info");
     DragNDrop *b = new DragNDrop(20,20,450,280,"drop your files here");
     Fl_Box *instuct = new Fl_Box (20, 305, 350, 30, "@undo  Please, decide which types of hashes you want to get:");
     Fl_BMP_Image *image = new Fl_BMP_Image("logo.bmp");
-    Fl_Box *img = new Fl_Box (30,30,30,30);
+    Fl_Box *img = new Fl_Box (480,0,200,150);
     img->image(image);
     b->box(FL_DOWN_BOX);
     md5_output = new Fl_Output(90,340,600,25);
