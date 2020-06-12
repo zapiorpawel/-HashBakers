@@ -21,6 +21,6 @@ public:
     DragNDrop(int x,int y,int w,int h,const char *l=0):Fl_Box(x,y,w,h,l){};
     int handle (int e);
 };
-void init_ui();
+void init_window(int argc, char ** argv);
 
 #endif

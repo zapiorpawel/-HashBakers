@@ -157,6 +157,14 @@ void init_ui()
     return;
 }
 
+void init_window(int argc, char **argv)
+{
+    Fl_Window *window = new Fl_Window(700,500, "Hasherino");
+    init_ui();
+    window->end();
+    window->show(argc,argv);
+}
+
 string GenerateRandomString(HashType Hash)
 {
 	//może zmień na std::vector
