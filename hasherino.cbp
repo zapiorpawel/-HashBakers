@@ -41,6 +41,7 @@
 			<Add library="gdi32" />
 			<Add library="user32" />
 			<Add library="kernel32" />
+			<Add library="fltk/lib/libfltk_images.a" />
 			<Add directory="fltk/lib" />
 		</Linker>
 		<Unit filename="hash.cpp" />

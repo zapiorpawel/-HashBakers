@@ -1,10 +1,14 @@
 #include "tools.hpp"
 #include <random>
+#include <FL/Fl_Double_Window.H>
+#include <Fl/Fl_BMP_Image.H>
 
 std::string filepath = "";
 Fl_Output *md5_output, *sha1_output, *sha256_output, *sha384_output, *sha512_output;
 Fl_Check_Button *md5_switch, *sha1_switch, *sha256_switch, *sha384_switch, *sha512_switch;
 Fl_Thread prime_thread;
+
+ Fl_Double_Window *window_info;
 
 int DragNDrop::handle (int e)
 {
@@ -113,6 +117,15 @@ void start_callback(Fl_Widget *z, void *k) {
     return;
 }
 
+void informations(Fl_Widget *z, void *k) {
+    std::cout << "pressed" << std::endl;
+
+    window_info->show();
+
+    //return Fl::run();
+}
+
+
 void switch_callback(Fl_Widget *z, void *k)
 {
     Fl_Check_Button *button = (Fl_Check_Button*)z;
@@ -130,7 +143,13 @@ void init_ui()
     Fl_Button *button2 = new Fl_Button(500, 115, 180, 50, "Info");
     DragNDrop *b = new DragNDrop(20,20,450,280,"drop your files here");
     Fl_Box *instuct = new Fl_Box (20, 305, 350, 30, "@undo  Please, decide which types of hashes you want to get:");
+    Fl_BMP_Image *image = new Fl_BMP_Image("logo.bmp");
+    Fl_Box *img = new Fl_Box (30,30,30,30);
+    img->image(image);
     b->box(FL_DOWN_BOX);
+
+
+
     md5_output = new Fl_Output(90,340,600,25);
     md5_switch = new Fl_Check_Button(10,340,70,25,"MD5");
     sha1_output = new Fl_Output(90,370,600,25);
@@ -154,6 +173,7 @@ void init_ui()
     sha384_switch->callback(switch_callback,sha384_output);
     sha512_switch->callback(switch_callback,sha512_output);
     button->callback(start_callback,0);
+    button2->callback(informations,0);
     return;
 }
 
@@ -163,6 +183,12 @@ void init_window(int argc, char **argv)
     init_ui();
     window->end();
     window->show(argc,argv);
+
+
+    window_info = new Fl_Double_Window(400,300, "About");
+    Fl_Box about(10, 10, 180, 80, "File hashing software developed on Programming II course at the \n Faculty of Applied Mathematics of the Silesian University of Technology. \n Authors: Semir Sionek, Paweł Zapiór");
+
+    window_info->end();
 }
 
 string GenerateRandomString(HashType Hash)
