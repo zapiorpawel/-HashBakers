@@ -128,8 +128,9 @@ void init_ui()
 {
     Fl_Button *button = new Fl_Button(500, 180, 180, 100, "Start");
     Fl_Button *button2 = new Fl_Button(500, 115, 180, 50, "Info");
-    DragNDrop *box = new DragNDrop(20,20,350,300,"drop your files here");
-    Fl_Box info(18, 295, 350, 30, "@undo  Please, decide which types of hashes you want to get:");
+    DragNDrop *b = new DragNDrop(20,20,450,280,"drop your files here");
+    Fl_Box *instuct = new Fl_Box (20, 305, 350, 30, "@undo  Please, decide which types of hashes you want to get:");
+    b->box(FL_DOWN_BOX);
     md5_output = new Fl_Output(90,340,600,25);
     md5_switch = new Fl_Check_Button(10,340,70,25,"MD5");
     sha1_output = new Fl_Output(90,370,600,25);
@@ -140,7 +141,8 @@ void init_ui()
     sha384_switch = new Fl_Check_Button(10,430,70,25,"SHA384");
     sha512_output = new Fl_Output(90,460,600,25);
     sha512_switch = new Fl_Check_Button(10,460,70,25,"SHA512");
-    box->align(FL_ALIGN_WRAP);
+    b->align(FL_ALIGN_WRAP);
+    b->color(FL_WHITE);
     md5_switch->set();
     sha1_switch->set();
     sha256_switch->set();
