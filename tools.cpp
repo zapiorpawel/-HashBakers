@@ -2,6 +2,8 @@
 #include <random>
 #include <FL/Fl_Double_Window.H>
 #include <Fl/Fl_BMP_Image.H>
+#include <Fl/Fl_Scroll.H>
+#include <Fl/Fl_Multiline_Output.H>
 
 std::string filepath = "";
 Fl_Output *md5_output, *sha1_output, *sha256_output, *sha384_output, *sha512_output;
@@ -9,6 +11,39 @@ Fl_Check_Button *md5_switch, *sha1_switch, *sha256_switch, *sha384_switch, *sha5
 Fl_Double_Window *window_info;
 DragNDrop *b;
 Fl_Thread prime_thread;
+
+const char *licenses =
+R"(hasherino is licensed under the terms
+of the GNU General Public License version 3
+
+Available online under:
+http://www.gnu.org/licenses/gpl-3.0.html
+
+hashlib++ - a simple hash library for C++
+Copyright (c) 2007-2011 Benjamin Gr¸delbach
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+1)     Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+2)     Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in
+        the documentation and/or other materials provided with the
+        distribution.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.)
+
+FLTK 1.x.x by Bill Spitzak and contributors
+Licensed under modified GPLv2, which is available for download from
+https://www.fltk.org/COPYING.php)";
+
 
 int DragNDrop::handle (int e)
 {
@@ -21,7 +56,7 @@ int DragNDrop::handle (int e)
             fl_message_title("Warning!");
             fl_alert("Multiple files dropped!");
             filepath = "";
-            label("drop your files here");
+            label("drop your file here");
             b->align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
             return 0;
         }
@@ -139,7 +174,7 @@ void init_ui()
 {
     Fl_Button *button = new Fl_Button(480, 200, 200, 100, "Start");
     Fl_Button *button2 = new Fl_Button(480, 140, 200, 50, "Info");
-    b = new DragNDrop(20,20,450,280,"drop your files here");
+    b = new DragNDrop(20,20,450,280,"drop your file here");
     Fl_Box *instuct = new Fl_Box (20, 305, 350, 30, "@undo  Please, decide which types of hashes you want to get:");
     Fl_BMP_Image *image = new Fl_BMP_Image("logo.bmp");
     Fl_Box *img = new Fl_Box (480,0,200,150);
@@ -178,13 +213,18 @@ void init_window(int argc, char **argv)
     init_ui();
     window->end();
     window->show(argc,argv);
-
-
-    window_info = new Fl_Double_Window(300,300, "About");
+    window_info = new Fl_Double_Window(500,500, "About");
     Fl_BMP_Image *image = new Fl_BMP_Image("logo.bmp");
-    Fl_Box *img2 = new Fl_Box (50,0,200,150);
+    Fl_Box *img2 = new Fl_Box (150,0,200,150);
     img2->image(image);
-    Fl_Box *about = new Fl_Box(10, 100, 280, 180, "File hashing software developed on Programming II course at the \n Faculty of Applied Mathematics of the Silesian University of Technology. \n \n  Authors: Semir Sionek, Paweł Zapiór");
+    Fl_Box *about = new Fl_Box(110, 100, 280, 180, "File hashing software developed on Programming II course at the \n Faculty of Applied Mathematics of the Silesian University of Technology. \n \n  Authors: Semir Sionek, Paweł Zapiór");
+    Fl_Box *info = new Fl_Box(10,270,100,25,"Licenses:");
+    info->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
+    Fl_Scroll *scroll = new Fl_Scroll(10,300,480,180);
+    Fl_Multiline_Output *license_show = new Fl_Multiline_Output(0,0,650,500);
+    license_show->value(licenses);
+    scroll->end();
+    scroll->scroll_to(-10,-300);
     about->align(FL_ALIGN_WRAP);
     window_info->end();
 }
