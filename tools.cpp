@@ -24,6 +24,11 @@ int DragNDrop::handle (int e)
             label("drop your files here");
             return 0;
         }
+        md5_output->value("");
+        sha1_output->value("");
+        sha256_output->value("");
+        sha384_output->value("");
+        sha512_output->value("");
         label(filepath.c_str());
         return 0;
     }
