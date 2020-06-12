@@ -44,13 +44,7 @@ int check_oven(Fl_Check_Button *button, HashBaker &oven, Fl_Output *out)
             return 1;
         }
         else
-        {
-            //usunąć później
-            Fl::lock();
-            out->value(GenerateRandomString(oven.Hashtype).c_str());
-            Fl::unlock();
             return 0;
-        }
     }
     return 0;
 }
@@ -74,15 +68,15 @@ void* control_thread(void *p)
     HashBaker sha512(HashType::SHA512,filepath);
 
     if(md5_switch->value())
-        {md5.Bake(); ccount++;}
+        {md5.Bake(); ccount++; md5_output->value("Calculating...");}
     if(sha1_switch->value())
-        {sha1.Bake(); ccount++;}
+        {sha1.Bake(); ccount++; sha1_output->value("Calculating...");}
     if(sha256_switch->value())
-        {sha256.Bake(); ccount++;}
+        {sha256.Bake(); ccount++; sha256_output->value("Calculating...");}
     if(sha384_switch->value())
-        {sha384.Bake(); ccount++;}
+        {sha384.Bake(); ccount++; sha384_output->value("Calculating...");}
     if(sha512_switch->value())
-        {sha512.Bake(); ccount++;}
+        {sha512.Bake(); ccount++; sha512_output->value("Calculating...");}
 
     while(true)
     {
@@ -123,11 +117,8 @@ void start_callback(Fl_Widget *z, void *k) {
 }
 
 void informations(Fl_Widget *z, void *k) {
-    std::cout << "pressed" << std::endl;
-
     window_info->show();
-
-    //return Fl::run();
+    return;
 }
 
 
@@ -152,9 +143,6 @@ void init_ui()
     Fl_Box *img = new Fl_Box (30,30,30,30);
     img->image(image);
     b->box(FL_DOWN_BOX);
-
-
-
     md5_output = new Fl_Output(90,340,600,25);
     md5_switch = new Fl_Check_Button(10,340,70,25,"MD5");
     sha1_output = new Fl_Output(90,370,600,25);

@@ -13,9 +13,6 @@
 #include <iostream>
 #include <chrono>
 
-
-std::string GenerateRandomString(HashType Hash);
-
 class DragNDrop : public Fl_Box
 {
 public:
