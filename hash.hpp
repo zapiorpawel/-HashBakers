@@ -4,10 +4,10 @@
 #include "hashlibpp/src/hashlibpp.h"
 #include <future>
 #include <thread>
-//#include <string>
+#include <FL/Fl.H>
+#include <FL/Fl_Box.H>
 using namespace std;
 
-//zamień na połączenie e.g HashClass->HashMD5
 enum HashType
 {
 	MD5,
@@ -22,10 +22,13 @@ class HashBaker
 private:
     hashwrapper *HashWrapper;
     string FilePath;
+    string Hash = "";
 	future<string> thread;
 	bool Lock;
 public:
+    HashType Hashtype;
     HashBaker(HashType Hash, string Path);
+    ~HashBaker();
     void Bake();
     bool IsCooked();
     string TakeOut();
