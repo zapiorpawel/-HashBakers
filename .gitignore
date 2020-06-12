@@ -1,3 +1,7 @@
 *.out
 *.gch
 *.exe
+bin/
+obj/
+*.layout
+*.depend
