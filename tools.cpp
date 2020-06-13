@@ -1,8 +1,8 @@
 #include "tools.hpp"
 #include <FL/Fl_Double_Window.H>
-#include <Fl/Fl_BMP_Image.H>
-#include <Fl/Fl_Scroll.H>
-#include <Fl/Fl_Multiline_Output.H>
+#include <FL/Fl_BMP_Image.H>
+#include <FL/Fl_Scroll.H>
+#include <FL/Fl_Multiline_Output.H>
 
 std::string filepath = "";
 Fl_Output *md5_output, *sha1_output, *sha256_output, *sha384_output, *sha512_output;            //Pointers for string output hashes
