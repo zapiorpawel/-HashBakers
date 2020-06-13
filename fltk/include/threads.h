@@ -34,7 +34,7 @@
 #ifndef Threads_H
 #  define Threads_H
 
-#  ifdef HAVE_PTHREAD_H
+#  ifndef WIN32
 // Use POSIX threading...
 
 #    include <pthread.h>
