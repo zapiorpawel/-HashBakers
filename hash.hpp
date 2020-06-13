@@ -17,21 +17,21 @@ enum HashType
 	SHA512
 };
 
-class HashBaker
+class HashBaker                                            //class for hash sting output making
 {
 private:
     hashwrapper *HashWrapper;
     string FilePath;
-    string Hash = "";
+    string Hash = "";                                      //supposed value
 	future<string> thread;
 	bool Lock;
 public:
     HashType Hashtype;
     HashBaker(HashType Hash, string Path);
-    ~HashBaker();
+    ~HashBaker();                                          //class dectructor
     void Bake();
-    bool IsCooked();
-    string TakeOut();
+    bool IsCooked();                                       //bool var - if hash is ready?
+    string TakeOut();                                      //string for ready hash output
 };
 
 #endif

@@ -17,10 +17,10 @@
 #include <iostream>
 #include <chrono>
 
-class DragNDrop : public Fl_Box
+class DragNDrop : public Fl_Box                                                 //dragNdrop class based on Fl_Box
 {
 public:
-    DragNDrop(int x,int y,int w,int h,const char *l=0):Fl_Box(x,y,w,h,l){};
+    DragNDrop(int x,int y,int w,int h,const char *l=0):Fl_Box(x,y,w,h,l){};     //attribiutes definition
     int handle (int e);
 };
 void init_window(int argc, char ** argv);

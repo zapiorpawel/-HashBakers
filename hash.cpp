@@ -3,7 +3,7 @@ using namespace std;
 
 HashBaker::HashBaker(HashType Hash, string Path)
 {
-	switch(Hash)
+	switch(Hash)                                                  //check which hash type is needed. Make appropriate hash wrappers
 	{
 		case MD5:
 			HashWrapper = new md5wrapper();
@@ -41,12 +41,12 @@ void HashBaker::Bake()
     });
 }
 
-bool HashBaker::IsCooked()
+bool HashBaker::IsCooked()                                           //check if hash is ready. Return bool var.
 {
 	return Lock ? false : true;
 }
 
-string HashBaker::TakeOut()
+string HashBaker::TakeOut()                                         //hash takeout for finished hashes
 {
     if(Hash == "")
         Hash = thread.get();

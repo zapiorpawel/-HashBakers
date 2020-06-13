@@ -3,8 +3,8 @@
 #include "tools.hpp"
 
 int main(int argc, char ** argv) {
-    Fl::scheme("gtk+");
-    init_window(argc,argv);
+    Fl::scheme("gtk+");             //skin for window: gtk+
+    init_window(argc,argv);         //main window inicjalization
     Fl::lock();
     return Fl::run();
 }

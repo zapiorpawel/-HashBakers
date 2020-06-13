@@ -5,13 +5,13 @@
 #include <Fl/Fl_Multiline_Output.H>
 
 std::string filepath = "";
-Fl_Output *md5_output, *sha1_output, *sha256_output, *sha384_output, *sha512_output;
-Fl_Check_Button *md5_switch, *sha1_switch, *sha256_switch, *sha384_switch, *sha512_switch;
-Fl_Double_Window *window_info;
+Fl_Output *md5_output, *sha1_output, *sha256_output, *sha384_output, *sha512_output;            //Pointers for string output hashes
+Fl_Check_Button *md5_switch, *sha1_switch, *sha256_switch, *sha384_switch, *sha512_switch;      //Pointers for checkig if hash type should be counted
+Fl_Double_Window *window_info;                                                                  //Pointer for info window (click info button)
 DragNDrop *b;
 Fl_Thread prime_thread;
 
-const char *licenses =
+const char *licenses =                                                                          //licence informations. Display in 'about' window.
 R"(hasherino is licensed under the terms
 of the GNU General Public License version 3
 
@@ -44,23 +44,23 @@ Licensed under modified GPLv2, which is available for download from
 https://www.fltk.org/COPYING.php)";
 
 
-int DragNDrop::handle (int e)
+int DragNDrop::handle (int e)                                                                   //DragNDrop function
 {
     if(e == FL_PASTE)
     {
         cout << "dropped!" <<endl;
         filepath = Fl::event_text();
-        if(filepath.find('\n',0) != std::string::npos)
+        if(filepath.find('\n',0) != std::string::npos)                                          //protection against wrong dragNdrop usage
         {
             fl_message_title("Warning!");
-            fl_alert("Multiple files dropped!");
+            fl_alert("Multiple files dropped!");                                                //Only one file can be hashed per cycle
             filepath = "";
-            label("drop your file here");
+            label("drop your file here");                                                       //instruction how to use dragNdrop
             b->align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
             return 0;
         }
         b->align(FL_ALIGN_LEFT|FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
-        md5_output->value("");
+        md5_output->value("");                                                                  //supposed values for hash outputs
         sha1_output->value("");
         sha256_output->value("");
         sha384_output->value("");
@@ -70,7 +70,7 @@ int DragNDrop::handle (int e)
     }
 }
 
-int check_oven(Fl_Check_Button *button, HashBaker &oven, Fl_Output *out)
+int check_oven(Fl_Check_Button *button, HashBaker &oven, Fl_Output *out)                       //protection: using for blocking check buttons in hashes counting time
 {
     if(button->value())
     {
@@ -85,28 +85,28 @@ int check_oven(Fl_Check_Button *button, HashBaker &oven, Fl_Output *out)
     return 0;
 }
 
-void* control_thread(void *p)
+void* control_thread(void *p)                                                                  //control threading function
 {
     int ccount = 0;
     Fl_Button *button = (Fl_Button*) p;
     Fl::lock();
-    button->deactivate();
-    sha512_switch->deactivate();
+    button->deactivate();                                                                      //Button start desactivation
+    sha512_switch->deactivate();                                                               //Switches desactivation to protect against changes during algoritm's work
     sha384_switch->deactivate();
     sha256_switch->deactivate();
     sha1_switch->deactivate();
     md5_switch->deactivate();
     Fl::unlock();
-    HashBaker md5(HashType::MD5,filepath);
+    HashBaker md5(HashType::MD5,filepath);                                                      //
     HashBaker sha1(HashType::SHA1,filepath);
     HashBaker sha256(HashType::SHA256,filepath);
     HashBaker sha384(HashType::SHA384,filepath);
     HashBaker sha512(HashType::SHA512,filepath);
 
     if(md5_switch->value())
-        {md5.Bake(); ccount++; md5_output->value("Calculating...");}
+        {md5.Bake(); ccount++; md5_output->value("Calculating...");}                            //check if hash algoritm finished work. If no print "Calculating.."
     if(sha1_switch->value())
-        {sha1.Bake(); ccount++; sha1_output->value("Calculating...");}
+        {sha1.Bake(); ccount++; sha1_output->value("Calculating...");}                          //-...-
     if(sha256_switch->value())
         {sha256.Bake(); ccount++; sha256_output->value("Calculating...");}
     if(sha384_switch->value())
@@ -130,7 +130,7 @@ void* control_thread(void *p)
 
     Fl::lock();
     button->activate();
-    sha512_switch->activate();
+    sha512_switch->activate();                                                               //Switches activation to enable hash next file
     sha384_switch->activate();
     sha256_switch->activate();
     sha1_switch->activate();
@@ -141,10 +141,10 @@ void* control_thread(void *p)
 }
 
 void start_callback(Fl_Widget *z, void *k) {
-    std::cout << "pressed" << std::endl;
+    std::cout << "pressed" << std::endl;                                                       //console debug informations
     if(filepath == "")
     {
-        fl_message_title("Warning!");
+        fl_message_title("Warning!");                                                           //alerts if no file has been selected
         fl_alert("No file selected!");
         return;
     }
@@ -152,18 +152,18 @@ void start_callback(Fl_Widget *z, void *k) {
     return;
 }
 
-void informations(Fl_Widget *z, void *k) {
+void informations(Fl_Widget *z, void *k) {                                                      //function show info window
     window_info->show();
     return;
 }
 
 
-void switch_callback(Fl_Widget *z, void *k)
+void switch_callback(Fl_Widget *z, void *k)                                                     //function attribute actions to button "start"
 {
     Fl_Check_Button *button = (Fl_Check_Button*)z;
     Fl_Output *output = (Fl_Output*)k;
     if(!button->value())
-        output->deactivate();
+        output->deactivate();                                                                   //
     else
         output->activate();
     return;
@@ -171,16 +171,16 @@ void switch_callback(Fl_Widget *z, void *k)
 
 void init_ui()
 {
-    Fl_Button *button = new Fl_Button(480, 200, 200, 100, "Start");
-    Fl_Button *button2 = new Fl_Button(480, 140, 200, 50, "Info");
-    b = new DragNDrop(20,20,450,280,"drop your file here");
-    Fl_Box *instuct = new Fl_Box (20, 305, 350, 30, "@undo  Please, decide which types of hashes you want to get:");
-    Fl_BMP_Image *image = new Fl_BMP_Image("logo.bmp");
-    Fl_Box *img = new Fl_Box (480,0,200,150);
+    Fl_Button *button = new Fl_Button(480, 200, 200, 100, "Start");                              //button start object iniclalization
+    Fl_Button *button2 = new Fl_Button(480, 140, 200, 50, "About");                              //button About object iniclalization
+    b = new DragNDrop(20,20,450,280,"drop your file here");                                      //dragNdrop widget
+    Fl_Box *instuct = new Fl_Box (20, 305, 350, 30, "@undo  Please, decide which types of hashes you want to get:");      //box with instruction text how to use program
+    Fl_BMP_Image *image = new Fl_BMP_Image("logo.bmp");                                          //logo graphic file pointer
+    Fl_Box *img = new Fl_Box (480,0,200,150);                                                    //logo graphic file box
     img->image(image);
-    b->box(FL_DOWN_BOX);
-    md5_output = new Fl_Output(90,340,600,25);
-    md5_switch = new Fl_Check_Button(10,340,70,25,"MD5");
+    b->box(FL_DOWN_BOX);                                                                         //frame arround box with dragNdrop widget
+    md5_output = new Fl_Output(90,340,600,25);                                                   //uneditable for user text field with hash output
+    md5_switch = new Fl_Check_Button(10,340,70,25,"MD5");                                        //check switch (mark to get hash this type)
     sha1_output = new Fl_Output(90,370,600,25);
     sha1_switch = new Fl_Check_Button(10,370,70,25,"SHA1");
     sha256_output = new Fl_Output(90,400,600,25);
@@ -188,9 +188,9 @@ void init_ui()
     sha384_output = new Fl_Output(90,430,600,25);
     sha384_switch = new Fl_Check_Button(10,430,70,25,"SHA384");
     sha512_output = new Fl_Output(90,460,600,25);
-    sha512_switch = new Fl_Check_Button(10,460,70,25,"SHA512");
-    b->align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
-    b->color(FL_WHITE);
+    sha512_switch = new Fl_Check_Button(10,460,70,25,"SHA512");                                  // for next hash types analogus text fields and switches
+    b->align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);                                       //text wrapping in dragNdrop box
+    b->color(FL_WHITE);                                                                          //dragNdrop box colour
     md5_switch->set();
     sha1_switch->set();
     sha256_switch->set();
@@ -201,29 +201,29 @@ void init_ui()
     sha256_switch->callback(switch_callback,sha256_output);
     sha384_switch->callback(switch_callback,sha384_output);
     sha512_switch->callback(switch_callback,sha512_output);
-    button->callback(start_callback,0);
-    button2->callback(informations,0);
+    button->callback(start_callback,0);                                                           //actions fot 'start' button
+    button2->callback(informations,0);                                                            //actions for 'about' button
     return;
 }
 
 void init_window(int argc, char **argv)
 {
-    Fl_Window *window = new Fl_Window(700,500, "Hasherino");
-    init_ui();
+    Fl_Window *window = new Fl_Window(700,500, "Hasherino");                                      //Main window inicjaliization
+    init_ui();                                                                                    //show main window UI
     window->end();
     window->show(argc,argv);
-    window_info = new Fl_Double_Window(500,500, "About");
-    Fl_BMP_Image *image = new Fl_BMP_Image("logo.bmp");
-    Fl_Box *img2 = new Fl_Box (150,0,200,150);
-    img2->image(image);
-    Fl_Box *about = new Fl_Box(110, 100, 280, 180, "File hashing software developed on Programming II course at the \n Faculty of Applied Mathematics of the Silesian University of Technology. \n \n  Authors: Semir Sionek, Paweł Zapiór");
-    Fl_Box *info = new Fl_Box(10,270,100,25,"Licenses:");
-    info->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
-    Fl_Scroll *scroll = new Fl_Scroll(10,300,480,180);
-    Fl_Multiline_Output *license_show = new Fl_Multiline_Output(0,0,650,500);
-    license_show->value(licenses);
+    window_info = new Fl_Double_Window(500,500, "About");                                          //About info window inicjalization
+    Fl_BMP_Image *image = new Fl_BMP_Image("logo.bmp");                                            //logo object inicjalization
+    Fl_Box *img2 = new Fl_Box (150,0,200,150);                                                     //box with logo.bmp placed in info window
+    img2->image(image);                                                                            //show logo in about window
+    Fl_Box *about = new Fl_Box(110, 100, 280, 180, "File hashing software developed on Programming II course. \n \n Faculty of Applied Mathematics \n Silesian University of Technology \n \n  Authors: Semir Sionek, Paweł Zapiór");  //show informations in about window
+    Fl_Box *info = new Fl_Box(10,270,100,25,"Licenses:");                                          //show box with informations about licence
+    info->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);                                                    //text wrapping in info window
+    Fl_Scroll *scroll = new Fl_Scroll(10,300,480,180);                                             //scroll controlers for information about licences in info window
+    Fl_Multiline_Output *license_show = new Fl_Multiline_Output(0,0,650,500);                      //text field with licence information inicjalization
+    license_show->value(licenses);                                                                 //show lincence information in text field
     scroll->end();
     scroll->scroll_to(-10,-300);
-    about->align(FL_ALIGN_WRAP);
+    about->align(FL_ALIGN_WRAP);                                                                    //text wrapping for licence informations
     window_info->end();
 }
