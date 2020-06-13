@@ -1,8 +1,8 @@
 #include "tools.hpp"
 #include <FL/Fl_Double_Window.H>
-#include <Fl/Fl_BMP_Image.H>
-#include <Fl/Fl_Scroll.H>
-#include <Fl/Fl_Multiline_Output.H>
+#include <FL/Fl_BMP_Image.H>
+#include <FL/Fl_Scroll.H>
+#include <FL/Fl_Multiline_Output.H>
 
 std::string filepath = "";
 Fl_Output *md5_output, *sha1_output, *sha256_output, *sha384_output, *sha512_output;            //Pointers for string output hashes
@@ -49,7 +49,11 @@ int DragNDrop::handle (int e)                                                   
     if(e == FL_PASTE)
     {
         filepath = Fl::event_text();
-        if(filepath.find('\n',0) != std::string::npos)                                          //protection against wrong dragNdrop usage
+        #ifndef WIN32
+        filepath.erase(0,7);
+        filepath.erase(filepath.find_last_not_of("\n")+1);
+        #endif
+		if(filepath.find('\n',0) != std::string::npos)                                          //protection against wrong dragNdrop usage
         {
             fl_message_title("Warning!");
             fl_alert("Multiple files dropped!");                                                //Only one file can be hashed per cycle
