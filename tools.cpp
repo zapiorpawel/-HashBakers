@@ -89,8 +89,8 @@ void* control_thread(void *p)                                                   
     int ccount = 0;
     Fl_Button *button = (Fl_Button*) p;
     Fl::lock();
-    button->deactivate();                                                                      //Button start desactivation
-    sha512_switch->deactivate();                                                               //Switches desactivation to protect against changes during algoritm's work
+    button->deactivate();                                                                      //Button start deactivation
+    sha512_switch->deactivate();                                                               //Switches deactivation to protect against changes during algorithm's work
     sha384_switch->deactivate();
     sha256_switch->deactivate();
     sha1_switch->deactivate();
@@ -103,7 +103,7 @@ void* control_thread(void *p)                                                   
     HashBaker sha512(HashType::SHA512,filepath);
 
     if(md5_switch->value())
-        {md5.Bake(); ccount++; md5_output->value("Calculating...");}                            //check if hash algoritm finished work. If no print "Calculating.."
+        {md5.Bake(); ccount++; md5_output->value("Calculating...");}                            //check if hash algorithm finished work. If no print "Calculating.."
     if(sha1_switch->value())
         {sha1.Bake(); ccount++; sha1_output->value("Calculating...");}                          //-...-
     if(sha256_switch->value())
@@ -168,8 +168,8 @@ void switch_callback(Fl_Widget *z, void *k)                                     
 
 void init_ui()
 {
-    Fl_Button *button = new Fl_Button(480, 200, 200, 100, "Start");                              //button start object iniclalization
-    Fl_Button *button2 = new Fl_Button(480, 140, 200, 50, "About");                              //button About object iniclalization
+    Fl_Button *button = new Fl_Button(480, 200, 200, 100, "Start");                              //button start object initialization
+    Fl_Button *button2 = new Fl_Button(480, 140, 200, 50, "About");                              //button About object initialization
     b = new DragNDrop(20,20,450,280,"drop your file here");                                      //dragNdrop widget
     Fl_Box *instuct = new Fl_Box (20, 305, 350, 30, "@undo  Please, decide which types of hashes you want to get:");      //box with instruction text how to use program
     Fl_BMP_Image *image = new Fl_BMP_Image("logo.bmp");                                          //logo graphic file pointer
@@ -185,9 +185,9 @@ void init_ui()
     sha384_output = new Fl_Output(90,430,600,25);
     sha384_switch = new Fl_Check_Button(10,430,70,25,"SHA384");
     sha512_output = new Fl_Output(90,460,600,25);
-    sha512_switch = new Fl_Check_Button(10,460,70,25,"SHA512");                                  // for next hash types analogus text fields and switches
+    sha512_switch = new Fl_Check_Button(10,460,70,25,"SHA512");                                  // for next hash types analogously text fields and switches
     b->align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);                                       //text wrapping in dragNdrop box
-    b->color(FL_WHITE);                                                                          //dragNdrop box colour
+    b->color(FL_WHITE);                                                                          //dragNdrop box color
     md5_switch->set();
     sha1_switch->set();
     sha256_switch->set();
@@ -198,29 +198,29 @@ void init_ui()
     sha256_switch->callback(switch_callback,sha256_output);
     sha384_switch->callback(switch_callback,sha384_output);
     sha512_switch->callback(switch_callback,sha512_output);
-    button->callback(start_callback,0);                                                           //actions fot 'start' button
+    button->callback(start_callback,0);                                                           //actions for 'start' button
     button2->callback(informations,0);                                                            //actions for 'about' button
     return;
 }
 
 void init_window(int argc, char **argv)
 {
-    Fl_Window *window = new Fl_Window(700,500, "Hasherino");                                      //Main window inicjaliization
+    Fl_Window *window = new Fl_Window(700,500, "Hasherino");                                      //Main window initialization
     init_ui();                                                                                    //show main window UI
     window->end();
     window->show(argc,argv);
-    window_info = new Fl_Double_Window(500,500, "About");                                          //About info window inicjalization
-    Fl_BMP_Image *image = new Fl_BMP_Image("logo.bmp");                                            //logo object inicjalization
+    window_info = new Fl_Double_Window(500,500, "About");                                          //About info window initialization
+    Fl_BMP_Image *image = new Fl_BMP_Image("logo.bmp");                                            //logo object initialization
     Fl_Box *img2 = new Fl_Box (150,0,200,150);                                                     //box with logo.bmp placed in info window
     img2->image(image);                                                                            //show logo in about window
     Fl_Box *about = new Fl_Box(110, 100, 280, 180, "File hashing software developed on Programming II course. \n \n Faculty of Applied Mathematics \n Silesian University of Technology \n \n  Authors: Semir Sionek, Paweł Zapiór");  //show informations in about window
-    Fl_Box *info = new Fl_Box(10,270,100,25,"Licenses:");                                          //show box with informations about licence
+    Fl_Box *info = new Fl_Box(10,270,100,25,"Licenses:");                                          //show box with informations about license
     info->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);                                                    //text wrapping in info window
-    Fl_Scroll *scroll = new Fl_Scroll(10,300,480,180);                                             //scroll controlers for information about licences in info window
-    Fl_Multiline_Output *license_show = new Fl_Multiline_Output(0,0,650,500);                      //text field with licence information inicjalization
-    license_show->value(licenses);                                                                 //show lincence information in text field
+    Fl_Scroll *scroll = new Fl_Scroll(10,300,480,180);                                             //scroll controllers for information about licenses in info window
+    Fl_Multiline_Output *license_show = new Fl_Multiline_Output(0,0,650,500);                      //text field with license information initialization
+    license_show->value(licenses);                                                                 //show license information in text field
     scroll->end();
     scroll->scroll_to(-10,-300);
-    about->align(FL_ALIGN_WRAP);                                                                    //text wrapping for licence informations
+    about->align(FL_ALIGN_WRAP);                                                                    //text wrapping for license informations
     window_info->end();
 }
