@@ -49,7 +49,11 @@ int DragNDrop::handle (int e)                                                   
     if(e == FL_PASTE)
     {
         filepath = Fl::event_text();
-        if(filepath.find('\n',0) != std::string::npos)                                          //protection against wrong dragNdrop usage
+        #ifndef WIN32
+        filepath.erase(0,7);
+        filepath.erase(filepath.find_last_not_of("\n")+1);
+        #endif
+		if(filepath.find('\n',0) != std::string::npos)                                          //protection against wrong dragNdrop usage
         {
             fl_message_title("Warning!");
             fl_alert("Multiple files dropped!");                                                //Only one file can be hashed per cycle
