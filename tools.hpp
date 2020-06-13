@@ -14,7 +14,6 @@
 #include "fltk/include/threads.h"
 #endif
 #include "hash.hpp"
-#include <iostream>
 #include <chrono>
 
 class DragNDrop : public Fl_Box                                                 //dragNdrop class based on Fl_Box

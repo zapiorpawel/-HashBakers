@@ -48,7 +48,6 @@ int DragNDrop::handle (int e)                                                   
 {
     if(e == FL_PASTE)
     {
-        cout << "dropped!" <<endl;
         filepath = Fl::event_text();
         if(filepath.find('\n',0) != std::string::npos)                                          //protection against wrong dragNdrop usage
         {
@@ -118,7 +117,6 @@ void* control_thread(void *p)                                                   
     {
         int fcount = 0;
         std::this_thread::sleep_for(chrono::milliseconds(250));
-        cout << "loop" << endl;
         fcount += check_oven(md5_switch,md5,md5_output);
         fcount += check_oven(sha1_switch,sha1,sha1_output);
         fcount += check_oven(sha256_switch,sha256,sha256_output);
@@ -141,7 +139,6 @@ void* control_thread(void *p)                                                   
 }
 
 void start_callback(Fl_Widget *z, void *k) {
-    std::cout << "pressed" << std::endl;                                                       //console debug informations
     if(filepath == "")
     {
         fl_message_title("Warning!");                                                           //alerts if no file has been selected
